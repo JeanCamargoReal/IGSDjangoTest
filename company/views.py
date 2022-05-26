@@ -1,15 +1,16 @@
-from urllib import response
+from sqlite3 import Cursor
 
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework import generics
 
 from .models import Employee
 from .serializers import EmployeeSerializer
 
 
-class EmployeeAPIView(APIView):
-    def get(self, request):
-        employees = Employee.objects.all()
-        serializer = EmployeeSerializer(employees, many=True)
-        
-        return Response(serializer.data)
+class EmployeesAPIView(generics.ListCreateAPIView):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+
+class EmployeeAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+
